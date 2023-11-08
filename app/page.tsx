@@ -24,10 +24,12 @@ export default function Home() {
         <button onClick={() => {
           modal.current?.classList.toggle('hidden')
           setModalMode("Categories")
-        }} className="bg-green-400 rounded-lg px-2 py-1 m-2 text-black">+</button>
+        }} className="bg-green-400 rounded-lg px-2 py-1 m-2 text-black">Add Category</button>
+        <button className="bg-green-400 rounded-lg px-2 py-1 m-2 text-black" onClick={() => handleDownload(categories)}>Download</button>
       <div className="flex gap-8 flex-wrap m-8">
         {categories.map(category => 
           <div onDrop={(e) => {
+            if (!items.includes(e.dataTransfer.getData("text"))) return
             setItems(items.filter(item => item !== e.dataTransfer.getData("text")))
             const updatedCategories = categories.map((c) => {
               if (c.name === category.name) {
@@ -45,7 +47,19 @@ export default function Home() {
           }} 
           className="bg-gray-400 rounded-lg p-4 text-gray-800 min-h-[18rem] min-w-[18rem] text-center">
             <p className="text-2xl">{category.name}</p>
-            {category.items.map(item => <p>{item}</p>)}
+            {category.items.map((item, idx) => <p draggable={true} onDragStart={(e) => handleOnDrag(e, item)}
+                onDrop={(e) => {
+                  const draggedItem = e.dataTransfer.getData("text");
+                  const itemIndex = category.items.indexOf(draggedItem);
+                  if (itemIndex !== -1) {
+                    category.items[itemIndex] = category.items[idx];
+                    category.items[idx] = draggedItem;
+                    setCategories([...categories]);
+                  }
+                }}
+          onDragOver={(e) => {
+            e.preventDefault()
+          }} >{item}</p>)}
           </div>
         )}
       </div>
@@ -54,7 +68,7 @@ export default function Home() {
         <button onClick={() => {
             modal.current?.classList.toggle('hidden')
             setModalMode("Category")
-          }} className="bg-green-400 rounded-lg px-2 py-1 m-2 text-black">Set Items</button>
+          }} className="bg-green-400 rounded-lg px-2 py-1 mb-4 text-black">Set Items</button>
         <div className="flex gap-4 flex-wrap">
           {items.map(string => 
             <p 
