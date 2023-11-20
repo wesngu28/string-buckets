@@ -21,11 +21,3 @@ npm run dev
 ## Motivation
 
 Often, I encounter disorganized lists of strings. These lists can stem from various sources, such as tasks I need to complete or items of interest that I've lost track of. Manually sorting these lists can become tedious, so I decided to create a graphical user interface to make this less boring and also learn how to implement drag-and-drop functionality.
-
-## TO-DO
-
-- [ ] Deletable categories that spawn their children back into the pool
-- [ ] Max-height or scroll categories
-- [ ] Deletable item in categories that spawn back to pool
-- [ ] Deletable items in pool
-- [ ] Click an item, then click a category as alternative to drag and drop.
