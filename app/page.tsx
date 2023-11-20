@@ -46,7 +46,9 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 relative">
-      <div className="flex flex-col items-center">
+      <h2 className="text-5xl font-bold tracking-tight">String Buckets</h2>
+      <Categories categories={categories} updateCategories={updateCategories} items={items} updateItems={updateItems} selection={selectedString} updateSelection={updateSelection} dragHandler={handleOnDrag} dragged={draggedCategory} />
+      <div className="flex items-center">
         <button
           onClick={() => {
             modal.current?.classList.toggle("hidden");
@@ -56,13 +58,6 @@ export default function Home() {
         >
           Add Category
         </button>
-        <button
-          className="bg-green-400 rounded-lg px-2 py-1 m-2 text-black"
-          onClick={() => handleDownload(categories)}
-        >
-          Download
-        </button>
-        <Categories categories={categories} updateCategories={updateCategories} items={items} updateItems={updateItems} selection={selectedString} updateSelection={updateSelection} dragHandler={handleOnDrag} dragged={draggedCategory} />
       </div>
       <div className="flex flex-col items-center">
         <div className="flex gap-2">
@@ -80,6 +75,12 @@ export default function Home() {
             className="bg-green-400 rounded-lg px-2 py-1 mb-4 text-black"
           >
             Clear Select
+          </button>
+          <button
+            className="bg-green-400 rounded-lg px-2 py-1 mb-4 text-black"
+            onClick={() => handleDownload(categories)}
+          >
+            Download
           </button>
         </div>
         <Items categories={categories} updateCategories={updateCategories} items={items} updateItems={updateItems} selection={selectedString} updateSelection={updateSelection} dragHandler={handleOnDrag} />
