@@ -11,10 +11,10 @@ interface Props {
 export function NewCategory({updateCategories, updateCategory, categories, category, modal}: Props) {
     return (
         <div className="bg-gray-400 w-96 rounded-lg p-4 flex flex-col gap-4 items-center">
-            <h2>Add New Category</h2>
-            <div className="flex gap-4">
-                <label>Name: {category}</label>
-                <input value={category} onChange={(e) => updateCategory(e.target.value)} />
+            <h2 className="text-xl">Add New Category</h2>
+            <div className="flex gap-4 items-center">
+                <label>Name:</label>
+                <input className="text-black p-1" value={category} onChange={(e) => updateCategory(e.target.value)} />
             </div>
             <button onClick={() => {
                 modal.current?.classList.toggle('hidden')
