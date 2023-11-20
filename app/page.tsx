@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NewCategory } from "./components/NewCategory";
 import { AddItems } from "./components/AddItems";
 import { handleDownload } from "@/lib/handleDownload";
@@ -166,24 +166,42 @@ export default function Home() {
         <div className="flex gap-4 flex-wrap">
           {Array.from(new Set(items)).map((string, idx) => (
             <p
-              draggable={true}
-              key={string}
-              onClick={() => setSelectedString([...selectedString, string])}
-              onDragStart={(e) => handleOnDrag(e, string)}
-              onDrop={(e) => {
-                const draggedItem = e.dataTransfer.getData("text");
-                const itemIndex = items.indexOf(draggedItem);
-                if (itemIndex !== -1) {
-                  items[itemIndex] = items[idx];
-                  items[idx] = draggedItem;
-                  setCategories([...categories]);
-                }
-              }}
-              onDragOver={(e) => {
-                e.preventDefault();
-              }}
-            >
-              {string}
+                className={`text-left ${selectedString.includes(string) ? 'bg-gray-600' : 'bg-gray-900'} p-1`}
+                draggable={true}
+                key={string}
+                onClick={(e) => {
+                  if (e.shiftKey) {
+                    const itemSet = Array.from(new Set(items))
+                    const idx = itemSet.findIndex(item => item === string)
+                    const firstidx = itemSet.findIndex(item => item === selectedString[0])
+                    const lastidx = itemSet.findIndex(item => item === selectedString[selectedString.length-1])
+                    if (idx < firstidx) {
+                      const firstidx = itemSet.findIndex(item => item === selectedString[0])
+                      setSelectedString([...selectedString, ...itemSet.slice(idx, firstidx+1)])
+                    } else if (idx > lastidx) {
+                      setSelectedString([...selectedString, ...itemSet.slice(lastidx, idx+1)])
+                    } else {
+                      setSelectedString([...selectedString, ...itemSet.slice(firstidx, lastidx+1)])
+                    }
+                  } else {
+                    setSelectedString([...selectedString, string])
+                  }
+                }}
+                onDragStart={(e) => handleOnDrag(e, string)}
+                onDrop={(e) => {
+                  const draggedItem = e.dataTransfer.getData("text");
+                  const itemIndex = items.indexOf(draggedItem);
+                  if (itemIndex !== -1) {
+                    items[itemIndex] = items[idx];
+                    items[idx] = draggedItem;
+                    setCategories([...categories]);
+                  }
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                {string}
             </p>
           ))}
         </div>
