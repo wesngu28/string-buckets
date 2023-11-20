@@ -1,19 +1,8 @@
 export function handleDownload(categories: Array<{name: string, items: string[]}>) {
-  const dl = categories.map((category) => {
-    return {
-      name: category.name,
-      items: category.items,
-    };
-  });
-  let download = new Blob([JSON.stringify(dl)], { type: `application/json` });
-  const url = window.URL.createObjectURL(download);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "categories.json";
-  link.click();
-  window.URL.revokeObjectURL(url);
   const dl2 = categories
-    .map((category) => category.items.join("\n"))
+    .map((category) => {
+      return `!--${category.name}--!\n${category.items.join("\n")}`
+    })
     .join("\n");
   let download2 = new Blob([dl2], { type: `text/plain` });
   const url2 = window.URL.createObjectURL(download2);
