@@ -177,11 +177,11 @@ export default function Home() {
                     const lastidx = itemSet.findIndex(item => item === selectedString[selectedString.length-1])
                     if (idx < firstidx) {
                       const firstidx = itemSet.findIndex(item => item === selectedString[0])
-                      setSelectedString([...selectedString, ...itemSet.slice(idx, firstidx+1)])
+                      setSelectedString(Array.from(new Set([...selectedString, ...itemSet.slice(idx, firstidx+1)])))
                     } else if (idx > lastidx) {
-                      setSelectedString([...selectedString, ...itemSet.slice(lastidx, idx+1)])
+                      setSelectedString(Array.from(new Set([...selectedString, ...itemSet.slice(lastidx, idx+1)])))
                     } else {
-                      setSelectedString([...selectedString, ...itemSet.slice(firstidx, lastidx+1)])
+                      setSelectedString(Array.from(new Set([...selectedString, ...itemSet.slice(firstidx, lastidx+1)])))
                     }
                   } else {
                     setSelectedString([...selectedString, string])
