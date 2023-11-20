@@ -13,6 +13,7 @@ export default function Home() {
   const [category, setCategory] = useState("");
   const [modalMode, setModalMode] = useState("");
   const [selectedString, setSelectedString] = useState<Array<string>>([]);
+  const [draggedCategory, setDraggedCategory] = useState<{name: string, items: string[]}>()
 
   const updateCategories = (
     categories: Array<{ name: string; items: string[] }>
@@ -20,7 +21,11 @@ export default function Home() {
   const updateCategory = (category: string) => setCategory(category);
   const updateItems = (items: Array<string>) => setItems(items);
 
-  function handleOnDrag(e: React.DragEvent, text: string) {
+  function handleOnDrag(e: React.DragEvent, text: string, type?: string) {
+    if (type === "category") {
+      const itemIndex = categories.findIndex(category => category.name === text);
+      setDraggedCategory(categories[itemIndex])
+    }
     e.dataTransfer.setData("text", text);
   }
 
@@ -71,7 +76,19 @@ export default function Home() {
                   setSelectedString([]);
                 }
               }}
+              draggable={true}
+              onDragStart={(e) => handleOnDrag(e, category.name, "category")}
               onDrop={(e) => {
+                if (draggedCategory) {
+                  const data = e.dataTransfer.getData("text")
+                  const itemIndex = categories.findIndex(category => category.name === data);
+                  if (itemIndex !== -1) {
+                    categories[itemIndex] = {name: category.name, items: category.items};
+                    categories[i] = {name: draggedCategory.name, items: draggedCategory.items};
+                    setCategories([...categories]);
+                  }
+                  return
+                }
                 if (category.items.includes(e.dataTransfer.getData("text")))
                   return;
                 setItems(
@@ -101,7 +118,7 @@ export default function Home() {
               className="bg-gray-400 rounded-lg p-4 text-gray-800 min-h-[18rem] min-w-[18rem] h-80 overflow-y-scroll text-center"
             >
               <div className="flex gap-2 items-center justify-center">
-                <p className="text-2xl">{category.name}</p>
+                <p className="text-2xl">{category.name} - {category.items.length}</p>
                 <button className="text-red-500"
                   onClick={() => {
                     const returnItems = items.concat(category.items);
