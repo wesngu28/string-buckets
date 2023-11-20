@@ -22,7 +22,7 @@ export default function Categories({
   dragged,
 }: Props) {
   return (
-    <div className="flex gap-8 flex-wrap m-8">
+    <div className="flex gap-8 flex-wrap m-8 justify-center">
       {categories.map((category, i) => (
         <div
           onClick={() => {
@@ -123,7 +123,7 @@ export default function Categories({
               key={idx}
               draggable={true}
               onClick={() => {
-                if (selection) return;
+                if (selection.length > 0) return;
                 category.items = category.items.filter((name) => name !== item);
                 updateItems([...items, item]);
               }}

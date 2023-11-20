@@ -90,7 +90,7 @@ export default function Home() {
             modal.current?.classList.toggle("hidden");
         }}
         ref={modal}
-        className="absolute hidden flex items-center justify-center inset-0 w-screen h-screen bg-[#000000e1]"
+        className="fixed hidden flex items-center justify-center inset-0 w-screen h-screen bg-[#000000e1]"
       >
         {modalMode === "Categories" ? (
           <NewCategory
@@ -99,7 +99,7 @@ export default function Home() {
             modal={modal}
           />
         ) : (
-          <AddItems updateItems={updateItems} items={items} modal={modal} />
+          <AddItems updateItems={updateItems} updateCategories={updateCategories} items={items} modal={modal} />
         )}
       </div>
     </main>
