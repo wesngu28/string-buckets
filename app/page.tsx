@@ -6,10 +6,10 @@ import { handleDownload } from "@/lib/handleDownload";
 
 export default function Home() {
   const modal = useRef<HTMLDivElement>(null);
-  const [items, setItems] = useState<Array<string>>([]);
+  const [items, setItems] = useState<Array<string>>(["Apple", "Banana", "Orange", "Tomato", "Cabbage"]);
   const [categories, setCategories] = useState<
     Array<{ name: string; items: string[] }>
-  >([]);
+  >([{name: "Fruits", items: ["Strawberry"]} ,{name: "Vegetable", items: ["Bok Choy"]}]);
   const [category, setCategory] = useState("");
   const [modalMode, setModalMode] = useState("");
   const [selectedString, setSelectedString] = useState<Array<string>>([]);
@@ -163,6 +163,7 @@ export default function Home() {
             Clear Select
           </button>
         </div>
+        <p>Active Selection {selectedString.map(string => <span>{string}</span>)}</p>
         <div className="flex gap-4 flex-wrap">
           {Array.from(new Set(items)).map((string, idx) => (
             <p
@@ -177,14 +178,36 @@ export default function Home() {
                     const lastidx = itemSet.findIndex(item => item === selectedString[selectedString.length-1])
                     if (idx < firstidx) {
                       const firstidx = itemSet.findIndex(item => item === selectedString[0])
-                      setSelectedString(Array.from(new Set([...selectedString, ...itemSet.slice(idx, firstidx+1)])))
+                      const slice = itemSet.slice(idx, firstidx)
+                      const inclusion = slice.some(element => selectedString.includes(element));
+                      const updatedSelection = inclusion
+                        ? selectedString.filter(select => !slice.includes(select))
+                        : [...selectedString, ...slice];
+
+                      setSelectedString(updatedSelection);
                     } else if (idx > lastidx) {
-                      setSelectedString(Array.from(new Set([...selectedString, ...itemSet.slice(lastidx, idx+1)])))
+                      const slice = itemSet.slice(lastidx + 1, idx+1)
+                      const inclusion = slice.some(element => selectedString.includes(element));
+                      const updatedSelection = inclusion
+                        ? selectedString.filter(select => !slice.includes(select))
+                        : [...selectedString, ...slice];
+
+                      setSelectedString(updatedSelection);
                     } else {
-                      setSelectedString(Array.from(new Set([...selectedString, ...itemSet.slice(firstidx, lastidx+1)])))
+                      const slice = itemSet.slice(firstidx+1, lastidx)
+                      const inclusion = slice.some(element => selectedString.includes(element));
+                      const updatedSelection = inclusion
+                        ? selectedString.filter(select => !slice.includes(select))
+                        : [...selectedString, ...slice];
+
+                      setSelectedString(updatedSelection);
                     }
                   } else {
-                    setSelectedString([...selectedString, string])
+                    if (selectedString.includes(string)) {
+                      setSelectedString(selectedString.filter(item => item !== string))
+                    } else {
+                      setSelectedString([...selectedString, string])
+                    }
                   }
                 }}
                 onDragStart={(e) => handleOnDrag(e, string)}
