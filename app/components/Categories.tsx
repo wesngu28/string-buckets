@@ -23,7 +23,6 @@ export default function Categories({
 }: Props) {
   return (
     <div className="text-center">
-      <p className="mb-4 text-xl font-semibold">Categories - {categories.length}</p>
       <div className="flex gap-8 flex-wrap mb-8 justify-center">
         {categories.map((category, i) => (
           <div

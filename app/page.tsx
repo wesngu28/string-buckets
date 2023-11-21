@@ -32,7 +32,8 @@ export default function Home() {
     categories: Array<{ name: string; items: string[] }>
   ) => setCategories(categories);
   const updateItems = (items: Array<string>) => setItems(items);
-  const updateSelection = (selectedString: Array<string>) => setSelectedString(selectedString);
+  const updateSelection = (selectedString: Array<string>) =>
+    setSelectedString(selectedString);
 
   function handleOnDrag(e: React.DragEvent, text: string, type?: string) {
     if (type === "category") {
@@ -46,21 +47,35 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 relative">
-      <h2 className="text-5xl font-bold tracking-tight">String Buckets</h2>
-      <Categories categories={categories} updateCategories={updateCategories} items={items} updateItems={updateItems} selection={selectedString} updateSelection={updateSelection} dragHandler={handleOnDrag} dragged={draggedCategory} />
-      <div className="flex items-center">
-        <button
-          onClick={() => {
-            modal.current?.classList.toggle("hidden");
-            setModalMode("Categories");
-          }}
-          className="bg-green-400 rounded-lg px-2 py-1 m-2 text-black"
-        >
-          Add Category
-        </button>
-      </div>
-      <div className="flex flex-col items-center">
-        <div className="flex gap-2">
+      <h2 className="text-5xl font-bold tracking-tight text-center">
+        String Buckets
+      </h2>
+      <Categories
+        categories={categories}
+        updateCategories={updateCategories}
+        items={items}
+        updateItems={updateItems}
+        selection={selectedString}
+        updateSelection={updateSelection}
+        dragHandler={handleOnDrag}
+        dragged={draggedCategory}
+      />
+      <div className="flex flex-col items-center gap-2">
+        <p className="mb-4 text-xl font-semibold">
+          Categories - {categories.length}
+        </p>
+        <div className="flex items-center">
+          <button
+            onClick={() => {
+              modal.current?.classList.toggle("hidden");
+              setModalMode("Categories");
+            }}
+            className="bg-green-400 rounded-lg px-2 py-1 m-2 text-black"
+          >
+            Add Category
+          </button>
+        </div>
+        <div className="flex gap-2 mb-8">
           <button
             onClick={() => {
               modal.current?.classList.toggle("hidden");
@@ -77,13 +92,30 @@ export default function Home() {
             Clear Select
           </button>
           <button
+            onClick={() => {
+              setItems([]);
+              setCategories([]);
+            }}
+            className="bg-green-400 rounded-lg px-2 py-1 mb-4 text-black"
+          >
+            Clear All
+          </button>
+          <button
             className="bg-green-400 rounded-lg px-2 py-1 mb-4 text-black"
             onClick={() => handleDownload(categories)}
           >
             Download
           </button>
         </div>
-        <Items categories={categories} updateCategories={updateCategories} items={items} updateItems={updateItems} selection={selectedString} updateSelection={updateSelection} dragHandler={handleOnDrag} />
+        <Items
+          categories={categories}
+          updateCategories={updateCategories}
+          items={items}
+          updateItems={updateItems}
+          selection={selectedString}
+          updateSelection={updateSelection}
+          dragHandler={handleOnDrag}
+        />
       </div>
       <div
         onClick={(e) => {
@@ -100,7 +132,12 @@ export default function Home() {
             modal={modal}
           />
         ) : (
-          <AddItems updateItems={updateItems} updateCategories={updateCategories} items={items} modal={modal} />
+          <AddItems
+            updateItems={updateItems}
+            updateCategories={updateCategories}
+            items={items}
+            modal={modal}
+          />
         )}
       </div>
     </main>
